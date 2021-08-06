@@ -14,14 +14,18 @@ output:
       highlightStyle: github
       highlightLines: true
       ratio: 16:9
-      countIncrementalSlides: true
+      countIncrementalSlides: FALSE
+    #includes:
+     # after_body: [slides/]
 ---
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(
-  fig.width=9, fig.height=3.5, fig.retina=3,
-  out.width = "50%",
+  fig.width=9, 
+  fig.height=3.5, 
+  fig.retina=3,
+  #out.width = "50%",
   cache = FALSE,
   echo = TRUE,
   message = FALSE, 
@@ -30,16 +34,21 @@ knitr::opts_chunk$set(
   fig.showtext = TRUE,
   hiline = TRUE
 )
-```
 
-```{r xaringan-themer, include=FALSE, warning=FALSE}
-library(xaringanthemer)
-style_duo_accent(
-  primary_color = "#1381B0",
-  secondary_color = "#FF961C",
-  inverse_header_color = "#FFFFFF"
+# library(xaringanthemer)
+# style_duo_accent(
+#   primary_color = "#1381B0",
+#   secondary_color = "#FF961C",
+#   inverse_header_color = "#FFFFFF"
+# )
+
+xaringanExtra::use_panelset()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_logo(
+  image_url = "https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png"
 )
 ```
+
 
 ## Motivation
 
@@ -78,25 +87,47 @@ Repeated measures &#8594; repeated measures ANOVA (rm-ANOVA) &#8594; _post-hoc_ 
 y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3 \times time_{t}\times treatment_{j}+\varepsilon_{ijt}\\ 
 \end{equation}
 
+--
 $y_{ijt}$: is the response for subject $i$ in treatment group $j$ at time $t$ </br> 
+--
 $\beta_0$: the mean group value </br>
+--
 $time_t$, $treatment_j$, $time_t \times treatment_j$: fixed effects of time and treatment and their interaction </br>
+--
 $\beta_1, \beta_2$ and $\beta_3$: linear slopes of the fixed effects. </br> 
+--
 $\varepsilon_{ijt}$: Errors that represent random variation not explained by the fixed effects, assumed to be $\sim N(0,\sigma^2)$</br>
+--
 (independently and identically normally distributed with mean zero and variance $\sigma^2$).
+
 ---
 
 ### In other words...
 
-An rm-ANOVA model gives a line!
 
+
+An rm-ANOVA is a model that fits a **line** to the trend of the data!
+ 
+.pull-left[
+<img src="slides/batis.gif" width="300">
+]
+.footnote[
+_Batis et. al. 2013_
+]
+
+.pull-right[
+ - It works reasonably well in cases like this!
+ ]
+ 
+ --
+.pull-right[
+ - But in biomedical research things don't look linear!
+]
+---
 
 ## Some examples
 
-![](/slides/Skala.jpg)
-.footnote[
-_Skala et. al. 2010_
- ]
+<img src="slides/Skala.jpg" width="300">
 
 ---
 name: colors

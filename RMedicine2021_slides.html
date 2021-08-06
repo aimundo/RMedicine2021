@@ -6,8 +6,12 @@
     <meta name="author" content="Ariel Mundo" />
     <meta name="author" content="Department of Biomedical Engineering" />
     <meta name="author" content="University of Arkansas" />
-    <meta name="date" content="2021-08-05" />
+    <meta name="date" content="2021-08-06" />
     <script src="RMedicine2021_slides_files/header-attrs/header-attrs.js"></script>
+    <link href="RMedicine2021_slides_files/panelset/panelset.css" rel="stylesheet" />
+    <script src="RMedicine2021_slides_files/panelset/panelset.js"></script>
+    <link href="RMedicine2021_slides_files/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="RMedicine2021_slides_files/tile-view/tile-view.js"></script>
     <script src="RMedicine2021_slides_files/htmlwidgets/htmlwidgets.js"></script>
     <script src="RMedicine2021_slides_files/jquery/jquery.min.js"></script>
     <link href="RMedicine2021_slides_files/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
@@ -28,10 +32,9 @@ class: center, middle, inverse, title-slide
 ### Ariel Mundo
 ### Department of Biomedical Engineering
 ### University of Arkansas
-### 2021-08-05
+### 2021-08-06
 
 ---
-
 
 
 
@@ -74,19 +77,47 @@ Repeated measures &amp;#8594; repeated measures ANOVA (rm-ANOVA) &amp;#8594; _po
 y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3 \times time_{t}\times treatment_{j}+\varepsilon_{ijt}\\ 
 \end{equation}`
 
+--
 `\(y_{ijt}\)`: is the response for subject `\(i\)` in treatment group `\(j\)` at time `\(t\)` &lt;/br&gt; 
+--
 `\(\beta_0\)`: the mean group value &lt;/br&gt;
+--
 `\(time_t\)`, `\(treatment_j\)`, `\(time_t \times treatment_j\)`: fixed effects of time and treatment and their interaction &lt;/br&gt;
+--
 `\(\beta_1, \beta_2\)` and `\(\beta_3\)`: linear slopes of the fixed effects. &lt;/br&gt; 
-`\(\varepsilon_{ijt}\)`: Errors that represent random variation not explained by the fixed effects assumed to be `\(\sim N(0,\sigma^2)\)`&lt;/br&gt;
+--
+`\(\varepsilon_{ijt}\)`: Errors that represent random variation not explained by the fixed effects, assumed to be `\(\sim N(0,\sigma^2)\)`&lt;/br&gt;
+--
 (independently and identically normally distributed with mean zero and variance `\(\sigma^2\)`).
+
 ---
+
+### In other words...
+
+
+
+An rm-ANOVA is a model that fits a **line** to the trend of the data!
+ 
+.pull-left[
+&lt;img src="slides/batis.gif" width="300"&gt;
+]
+.footnote[
+_Batis et. al. 2013_
+]
+
+.pull-right[
+ - It works reasonably well in cases like this!
+ ]
+ 
+ --
+.pull-right[
+ - But in biomedical research things don't look linear!
+]
+---
+
 ## Some examples
 
-![](/slides/Skala.jpg)
-.footnote[
-_Skala et. al. 2010_
- ]
+&lt;img src="slides/Skala.jpg" width="300"&gt;
 
 ---
 name: colors
@@ -368,8 +399,8 @@ knitr::kable(head(mtcars), format = 'html')
 DT::datatable(head(mtcars), fillContainer = FALSE, options = list(pageLength = 4))
 ```
 
-<div id="htmlwidget-b81e3eaa8a581c052561" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b81e3eaa8a581c052561">{"x":{"filter":"none","fillContainer":false,"data":[["Mazda RX4","Mazda RX4 Wag","Datsun 710","Hornet 4 Drive","Hornet Sportabout","Valiant"],[21,21,22.8,21.4,18.7,18.1],[6,6,4,6,8,6],[160,160,108,258,360,225],[110,110,93,110,175,105],[3.9,3.9,3.85,3.08,3.15,2.76],[2.62,2.875,2.32,3.215,3.44,3.46],[16.46,17.02,18.61,19.44,17.02,20.22],[0,0,1,1,0,1],[1,1,1,0,0,0],[4,4,4,3,3,3],[4,4,1,1,2,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpg<\/th>\n      <th>cyl<\/th>\n      <th>disp<\/th>\n      <th>hp<\/th>\n      <th>drat<\/th>\n      <th>wt<\/th>\n      <th>qsec<\/th>\n      <th>vs<\/th>\n      <th>am<\/th>\n      <th>gear<\/th>\n      <th>carb<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":4,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[4,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1c29c6e0830517dc288d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c29c6e0830517dc288d">{"x":{"filter":"none","fillContainer":false,"data":[["Mazda RX4","Mazda RX4 Wag","Datsun 710","Hornet 4 Drive","Hornet Sportabout","Valiant"],[21,21,22.8,21.4,18.7,18.1],[6,6,4,6,8,6],[160,160,108,258,360,225],[110,110,93,110,175,105],[3.9,3.9,3.85,3.08,3.15,2.76],[2.62,2.875,2.32,3.215,3.44,3.46],[16.46,17.02,18.61,19.44,17.02,20.22],[0,0,1,1,0,1],[1,1,1,0,0,0],[4,4,4,3,3,3],[4,4,1,1,2,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpg<\/th>\n      <th>cyl<\/th>\n      <th>disp<\/th>\n      <th>hp<\/th>\n      <th>drat<\/th>\n      <th>wt<\/th>\n      <th>qsec<\/th>\n      <th>vs<\/th>\n      <th>am<\/th>\n      <th>gear<\/th>\n      <th>carb<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":4,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[4,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 layout: true
@@ -448,7 +479,7 @@ library(ggplot2)
 (g &lt;- ggplot(mpg) + aes(hwy, cty, color = class) + geom_point())
 ```
 
-&lt;img src="RMedicine2021_slides_files/figure-html/plot-example-1.png" width="50%" /&gt;
+&lt;img src="RMedicine2021_slides_files/figure-html/plot-example-1.png" width="648" /&gt;
 
 ---
 
@@ -458,7 +489,7 @@ g + xaringanthemer::theme_xaringan(text_font_size = 16, title_font_size = 18) +
   ggtitle("A Plot About Cars")
 ```
 
-&lt;img src="RMedicine2021_slides_files/figure-html/plot-example-themed-1.png" width="50%" /&gt;
+&lt;img src="RMedicine2021_slides_files/figure-html/plot-example-themed-1.png" width="648" /&gt;
 
 ---
 layout: false
@@ -523,7 +554,7 @@ The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihu
 "highlightStyle": "github",
 "highlightLines": true,
 "ratio": "16:9",
-"countIncrementalSlides": true
+"countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
