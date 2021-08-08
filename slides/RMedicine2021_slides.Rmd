@@ -3,12 +3,15 @@ title: "Generalized additive models for longitudinal biomedical data"
 subtitle: "_Beyond linear models_"  
 author: 
   - "Ariel Mundo"
-  - "Department of Biomedical Engineering"
-  - "University of Arkansas"
-date: '`r Sys.Date()`'
+institute: "Department of Biomedical Engineering <br /> University of Arkansas" 
+date: '08-26-2021'
 output:
   xaringan::moon_reader:
-    css: custom-theme.css
+    css: 
+      - default
+      - css/mytheme.css
+      - css/mytheme-fonts.css
+    seal: false
     nature:
       slideNumberFormat: "%current%"
       highlightStyle: github
@@ -19,8 +22,30 @@ output:
      # after_body: [slides/]
 ---
 
+```{r meta, echo=FALSE}
+library(metathis)
+meta() %>%
+  meta_general(
+    description = "Generalized additive models for biomedical research",
+    generator = "xaringan and remark.js"
+  ) %>% 
+  meta_name("github-repo" = "aimundo/RMedicine2021") %>% 
+  meta_social(
+    title = "Generalized additive models for longitudinal biomedical data",
+    #url = "https://spcanelon.github.io/xaringan-basics-and-beyond/slides/day-01-basics.html#1",
+    #image = "https://raw.githubusercontent.com/spcanelon/xaringan-basics-and-beyond/main/slides/day-01-cover-image.png",
+    og_type = "website",
+    og_author = "Ariel Mundo",
+    twitter_card_type = "summary_large_image",
+    twitter_creator = "@amundortiz"
+  )
+```
+
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+library(icons)
+library(xaringanExtra)
+library(tidyverse)
 knitr::opts_chunk$set(
   fig.width=9, 
   fig.height=3.5, 
@@ -35,20 +60,59 @@ knitr::opts_chunk$set(
   hiline = TRUE
 )
 
-# library(xaringanthemer)
-# style_duo_accent(
-#   primary_color = "#1381B0",
-#   secondary_color = "#FF961C",
-#   inverse_header_color = "#FFFFFF"
-# )
-
 xaringanExtra::use_panelset()
 xaringanExtra::use_tile_view()
 xaringanExtra::use_logo(
   image_url = "https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png"
 )
+xaringanExtra::style_share_again(
+  share_buttons = c("twitter","linkedin")
+)
 ```
 
+class: title-slide, right, top
+background-image: url(img/r_medicine.jpg)
+background-position: 10% 75%, 75% 75%
+background-size: 30%, cover
+
+.right-column[
+# `r rmarkdown::metadata$title`
+### `r rmarkdown::metadata$subtitle`
+
+**`r rmarkdown::metadata$author`**<br>
+<br>
+`r rmarkdown::metadata$institute` <br><br>
+`r rmarkdown::metadata$date`
+]
+
+
+
+???
+
+Welcome to the workshop on sharing your work with xaringan.
+
+Where I'll show you how to create impressive presentation slides that can be deployed to the web for easy sharing.
+
+---
+name: about-me
+layout: false
+class: about-me-slide, inverse, middle, center
+
+# About me
+
+<img style="border-radius: 50%;" src="https://silvia.rbind.io/authors/silvia/avatar.png" width="150px"/>
+
+## Ariel Mundo
+
+### PhD Candidate
+
+.fade[Department of Biomedical Engineering<br>University of Arkansas<br> Fayetteville, AR, USA]
+
+[`r icons::fontawesome("link")` aimundo.rbind.io](https://aimundo.rbind.io)
+[`r icons::fontawesome("twitter")` @amundortiz](https://twitter.com/amundortiz)
+[`r icons::icon_style(icons::fontawesome("github"), scale = 1)` @aimundo](https://github.com/aimundo)
+
+---
 
 ## Motivation
 
@@ -89,14 +153,19 @@ y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3
 
 --
 $y_{ijt}$: is the response for subject $i$ in treatment group $j$ at time $t$ </br> 
+</br> 
 --
 $\beta_0$: the mean group value </br>
+</br> 
 --
 $time_t$, $treatment_j$, $time_t \times treatment_j$: fixed effects of time and treatment and their interaction </br>
+</br> 
 --
 $\beta_1, \beta_2$ and $\beta_3$: linear slopes of the fixed effects. </br> 
+</br> 
 --
 $\varepsilon_{ijt}$: Errors that represent random variation not explained by the fixed effects, assumed to be $\sim N(0,\sigma^2)$</br>
+</br> 
 --
 (independently and identically normally distributed with mean zero and variance $\sigma^2$).
 
@@ -109,27 +178,41 @@ $\varepsilon_{ijt}$: Errors that represent random variation not explained by the
 An rm-ANOVA is a model that fits a **line** to the trend of the data!
  
 .pull-left[
-<img src="slides/batis.gif" width="300">
+<img src="img/batis.gif" width="300">
 ]
 .footnote[
 _Batis et. al. 2013_
 ]
 
 .pull-right[
- - It works reasonably well in cases like this!
+
+ - It works reasonably well in cases like this
+ 
+ - But in biomedical research things don't look linear!
  ]
  
- --
-.pull-right[
- - But in biomedical research things don't look linear!
-]
+
 ---
 
 ## Some examples
+.pull-left[
+<img src="img/Skala.jpg" width="500">
+]
+.footnote[
+_Skala et. al. 2010_
+]
 
-<img src="slides/Skala.jpg" width="300">
+--
+
+.pull-right[
+<img src="img/Vishwanath.jpg" width="500">
+.footnote[
+_Vishwanath et. al. 2009_
+]
+]
 
 ---
+
 name: colors
 
 ## Colors
@@ -340,10 +423,7 @@ library(ggplot2)
 
 ---
 
-```{r plot-example-themed}
-g + xaringanthemer::theme_xaringan(text_font_size = 16, title_font_size = 18) +
-  ggtitle("A Plot About Cars")
-```
+
 
 ---
 layout: false
