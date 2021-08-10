@@ -187,9 +187,8 @@ _Batis et. al. 2013_
 
 .pull-right[
 
- - It works reasonably well in cases like this
- 
- - But in biomedical research things don't look linear!
+ - It works reasonably well in certain cases
+ ## But in biomedical research things don't look linear!
  ]
  
 
@@ -213,6 +212,11 @@ _Vishwanath et. al. 2009_
 ]
 
 ---
+## A visual example
+
+
+
+---
 class: center
 
 # Acknowledgements
@@ -221,11 +225,11 @@ class: center
 Dr. John R. Tipton <br> <br>
 Department of Mathematical Sciences, University of Arkansas
 
-Dr. Timothy J. Muldoon <br> <br>
+Dr. Timothy J. Muldoon <br> <br> 
 Department of Biomedical Engineering, University of Arkansas
 ]
 
-.pull-right[### Funding agencies
-![:scale 20%](img/nsf.png)
+.pull-right[
+![:scale 20%](img/nsf.png) <br> <br>
 ![:scale 45%](img/ABI.png)
 ]
