@@ -9,6 +9,7 @@ library(here)
 library(ggplot2)
 library(tidyverse)
 library(mgcv)
+library(patchwork)
 #####
 data<-read.csv(here("data","tumor_data.csv"))
 data$Group<-as.factor(data$Group)
