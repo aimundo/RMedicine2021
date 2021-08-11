@@ -4,6 +4,7 @@
     <title>Generalized additive models for longitudinal biomedical data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Ariel Mundo" />
+    <script src="RMedicine2021_slides_files/header-attrs/header-attrs.js"></script>
     <link href="RMedicine2021_slides_files/remark-css/default.css" rel="stylesheet" />
     <meta name="description" content="Generalized additive models for biomedical research"/>
     <meta name="generator" content="xaringan and remark.js"/>
@@ -116,19 +117,19 @@ y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3
 
 --
 `\(y_{ijt}\)`: is the response for subject `\(i\)` in treatment group `\(j\)` at time `\(t\)` &lt;/br&gt; 
-&lt;/br&gt; 
+
 --
 `\(\beta_0\)`: the mean group value &lt;/br&gt;
-&lt;/br&gt; 
+
 --
 `\(time_t\)`, `\(treatment_j\)`, `\(time_t \times treatment_j\)`: fixed effects of time and treatment and their interaction &lt;/br&gt;
-&lt;/br&gt; 
+
 --
 `\(\beta_1, \beta_2\)` and `\(\beta_3\)`: linear slopes of the fixed effects. &lt;/br&gt; 
-&lt;/br&gt; 
+ 
 --
-`\(\varepsilon_{ijt}\)`: Errors that represent random variation not explained by the fixed effects, assumed to be `\(\sim N(0,\sigma^2)\)`&lt;/br&gt;
-&lt;/br&gt; 
+`\(\varepsilon_{ijt}\)`: random variation not explained by the fixed effects, assumed to be `\(\sim N(0,\sigma^2)\)`&lt;/br&gt;
+
 --
 (independently and identically normally distributed with mean zero and variance `\(\sigma^2\)`).
 
@@ -158,7 +159,7 @@ _Batis et. al. 2013_
 
 ## Some examples
 .pull-left[
-&lt;img src="img/Skala.jpg" width="500"&gt;
+&lt;img src="img/Skala.jpg" width="250"&gt;
 ]
 .footnote[
 _Skala et. al. 2010_
@@ -176,14 +177,124 @@ _Vishwanath et. al. 2009_
 ---
 ## A visual example
 
-Some simulated data that follows trends of tumor volume reported in the literature. Simulation is useful here because we can only get a mean value from the paper. 
+Some simulated data that follows trends of tumor volume reported in Zheng et. al. (2019). Simulation is useful here because we can only get a mean value from the paper. 
 
 .pull-left[
 &lt;img src="RMedicine2021_slides_files/figure-html/data-plot-1.png" width="504" /&gt;
 ]
 
+
 .pull-right[
 &lt;img src="RMedicine2021_slides_files/figure-html/simulated-data-1.png" width="504" /&gt;
+]
+
+---
+--- 
+
+### How does an rm-ANOVA model look on this data?
+
+- Linear model with interaction of time and group:
+
+.panelset[
+.panel[.panel-name[model]
+
+
+```r
+lm1&lt;-lm(Vol_sim ~ Day + Group + Day * Group, data = dat_sim)
+```
+]
+
+.panel[.panel-name[Plot]
+
+&lt;img src="RMedicine2021_slides_files/figure-html/rm-ANOVA plot-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+.panel[.panel-name[p-values]
+
+
+```r
+anova(lm1)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: Vol_sim
+##            Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Day         1 1572512 1572512  554.64 &lt; 2.2e-16 ***
+## Group       1 1411668 1411668  497.91 &lt; 2.2e-16 ***
+## Day:Group   1  879240  879240  310.12 &lt; 2.2e-16 ***
+## Residuals 316  895923    2835                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+.panel[.panel-name[post-hoc]
+
+
+```r
+emmeans(lm1, ~Day * Group, adjust = "bonf")
+```
+
+```
+##  Day Group emmean   SE  df lower.CL upper.CL
+##  7.5 T1       257 4.21 316      248      267
+##  7.5 T2       124 4.21 316      115      134
+## 
+## Confidence level used: 0.95 
+## Conf-level adjustment: bonferroni method for 2 estimates
+```
+
+]
+]
+
+---
+## An alternative: Generalized additive models (GAMs)
+
+`\begin{equation}
+  y_{ijt}=\beta_0+f(x_t\mid \beta_j)+\varepsilon_{ijt}
+\end{equation}`
+
+`\(y_{ijt}\)`: response at time `\(t\)` of subject  `\(i\)` in group `\(j\)` 
+
+`\(\beta_0\)`: expected value at time 0 
+
+The change of `\(y_{ijt}\)` over time is represented by the _smooth function_ `\(f(x_t\mid \beta_j)\)` with inputs as the covariates `\(x_t\)` and parameters `\(\beta_j\)` 
+
+`\(\varepsilon_{ijt}\)` represents the residual error
+
+---
+## An alternative: GAMs
+
+&lt;img src="RMedicine2021_slides_files/figure-html/basis-functions-plot-1.png" width="864" style="display: block; margin: auto;" /&gt;
+
+---
+
+## How does a GAM model look for the simulated data?
+.panelset[
+.panel[.panel-name[model]
+
+
+```r
+gam1 &lt;- gam(Vol_sim ~ Group+s(Day, by = Group, k = 10),
+          method='REML',
+          data  = dat_sim)
+```
+]
+
+.panel[.panel-name[Plot]
+
+&lt;img src="RMedicine2021_slides_files/figure-html/GAM-plot-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[Pairwise comp.]
+
+&lt;img src="RMedicine2021_slides_files/figure-html/GAM-tumor-plot-1.png" width="576" style="display: block; margin: auto;" /&gt;
+
+]
 ]
 ---
 class: center
@@ -202,6 +313,18 @@ Department of Biomedical Engineering, University of Arkansas
 ![:scale 20%](img/nsf.png) &lt;br&gt; &lt;br&gt;
 ![:scale 45%](img/ABI.png)
 ]
+
+---
+
+## References
+
+- Batis, C., Sotres-Alvarez, D., Gordon-Larsen, P., Mendez, M., Adair, L., &amp; Popkin, B. (2014). Longitudinal analysis of dietary patterns in Chinese adults from 1991 to 2009. _British Journal of Nutrition_, 111(8), 1441-1451. doi:10.1017/S0007114513003917
+
+- Skala, M. C., Fontanella, A. N., Lan, L., Izatt, J. A., &amp; Dewhirst, M. W. (2010). Longitudinal optical imaging of tumor metabolism and hemodynamics. _Journal of biomedical optics, 15(1)_, 011112.doi: 10.1117/1.3285584
+
+- Vishwanath, K., Yuan, H., Barry, W. T., Dewhirst, M. W., &amp; Ramanujam, N. (2009). Using optical spectroscopy to longitudinally monitor physiological changes within solid tumors. _Neoplasia_ (New York, N.Y.), 11(9), 889–900. https://doi.org/10.1593/neo.09580
+
+- Zheng, X., Cui, L., Chen, M., Soto, L. A., Graves, E. E., &amp; Rao, J. (2019). A near-infrared phosphorescent nanoprobe enables quantitative, longitudinal imaging of tumor hypoxia dynamics during radiotherapy. Cancer research, 79(18), 4787-4797. doi: 10.1158/0008-5472.CAN-19-0530
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -17,6 +17,7 @@ library(viridis)
 data<-read.csv(here("data","tumor_data.csv")) #read data, mean tumor volume trend
 data$Group<-as.factor(data$Group) #make Group a factor
 
+
 #plot data
 ggplot(data,aes(x=Day,y=Volume,group=Group,color=Group))+
     geom_line(size=2)+
@@ -91,8 +92,8 @@ lm_predict$subject<-factor(paste(lm_predict$subject, lm_predict$Group, sep = "-"
 
 #adds the predictions to the grid and creates a confidence interval for GAM
 gam_predict<-gam_predict%>%
-    mutate(fit = predict(m1,gam_predict,se.fit = TRUE,type='response')$fit,
-           se.fit = predict(m1, gam_predict,se.fit = TRUE,type='response')$se.fit)
+    mutate(fit = predict(gam1,gam_predict,se.fit = TRUE,type='response')$fit,
+           se.fit = predict(gam1, gam_predict,se.fit = TRUE,type='response')$se.fit)
 
 #using lm
 lm_predict<-lm_predict%>%
@@ -149,4 +150,118 @@ f4<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
 #plot both models
 f3+f4
 
+#posthoc comparisons for the linear model
+library(emmeans)
 
+emmeans(lm1,)
+
+
+######pairwise comparisons for GAM######
+
+##Pairwise comparisons
+
+pdat <- expand.grid(Day = seq(0, 15, length = 400),
+                    Group = c('T1', 'T2'))
+
+#this function takes the model, grid and groups to be compared using the lpmatrix
+
+smooth_diff <- function(model, newdata, g1, g2, alpha = 0.05,
+                        unconditional = FALSE) {
+    xp <- predict(model, newdata = newdata, type = 'lpmatrix')
+    #Find columns in xp where the name contains "Control" and "Treatment"
+    col1 <- grepl(g1, colnames(xp))
+    col2 <- grepl(g2, colnames(xp))
+    #Find rows in xp that correspond to each treatment
+    row1 <- with(newdata, Group == g1)
+    row2 <- with(newdata, Group == g2)
+    ## difference rows of xp for data from comparison
+    X <- xp[row1, ] - xp[row2, ]
+    ## zero out cols of X related to splines for other lochs
+    X[, ! (col1 | col2)] <- 0
+    ## zero out the parametric cols
+    #X[, !grepl('^s\\(', colnames(xp))] <- 0
+    dif <- X %*% coef(model)
+    se <- sqrt(rowSums((X %*% vcov(model, unconditional = unconditional)) * X))
+    crit <- qt(alpha/2, df.residual(model), lower.tail = FALSE)
+    upr <- dif + (crit * se)
+    lwr <- dif - (crit * se)
+    data.frame(pair = paste(g1, g2, sep = '-'),
+               diff = dif,
+               se = se,
+               upper = upr,
+               lower = lwr)
+}
+
+comp1<-smooth_diff(gam1,pdat,'T1','T2')
+
+comp_Vol_sim <- cbind(Day = seq(0, 15, length = 400),
+                        rbind(comp1)) %>%
+    mutate(interval=case_when(
+        upper>0 & lower<0~"no-diff",
+        upper<0~"less",
+        lower>0~"greater"
+    ))
+
+#function to obtain values for the shading regions
+pairwise_limits<-function(dataframe){
+    #extract values where the lower limit of the ribbon is greater than zero
+    #this is the region where the control group effect is greater
+    v1<-dataframe%>%
+        filter(lower>0)%>%
+        select(Day)
+    #get day  initial value
+    init1=v1$Day[[1]]
+    #get day final value
+    final1=v1$Day[[nrow(v1)]]
+
+    my_list<-list(
+                  init1=init1,
+                  final1=final1)
+    return(my_list)
+}
+
+my_list<-pairwise_limits(comp_Vol_sim)
+rib_col<-'#EDD03AFF' #color for ribbon
+
+ggplot(comp_Vol_sim, aes(x = Day, y = diff, group = pair))+
+     geom_ribbon(aes(ymin = lower, ymax = upper),
+                alpha = 0.5,
+                fill=rib_col) +
+    geom_line(data=comp_Vol_sim,aes(y=0),size=0.5)+
+    geom_line(color='black',size=1) +
+    facet_wrap(~ pair) +
+    theme_classic()+
+    labs(x = 'Days', y = expression(paste('Difference in StO'[2] )))+
+    scale_x_continuous(breaks=c(0,2,5,7,10))+
+    theme(
+        text=element_text(size=18),
+        legend.title=element_blank()
+    )
+
+c1<-ggplot(comp_Vol_sim, aes(x = Day, y = diff, group = pair)) +
+    annotate("rect",
+             xmin =my_list$init1, xmax =my_list$final1,ymin=-Inf,ymax=Inf,
+             fill='#30123BFF',
+             alpha = 0.5,
+    ) +
+    annotate("text",
+             x=7,
+             y=300,
+             label="T1>T2",
+             size=8,
+             angle=0
+    )+
+    geom_ribbon(aes(ymin = lower, ymax = upper),
+                alpha = 0.5,
+                fill=rib_col) +
+    geom_line(data=comp_Vol_sim,aes(y=0),size=0.5)+
+    geom_line(color='black',size=1) +
+    facet_wrap(~ pair) +
+    theme_classic()+
+    labs(x = 'Days', y = expression(paste('Difference in tumor volume' )))+
+    scale_x_continuous(breaks=breaks_s)+
+    theme(
+        text=element_text(size=18),
+        legend.title=element_blank()
+    )
+c1
