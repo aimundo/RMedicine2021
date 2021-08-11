@@ -1,20 +1,27 @@
-## Data is from:
+## Data follows the trends from:
 ## A Near-Infrared Phosphorescent
 ## Nanoprobe Enables Quantitative, Longitudinal Imaging of
 ## Tumor Hypoxia Dynamics during Radiotherapy
 ## --
 ## Zheng et. al.
 ## doi: 10.1158/0008-5472.CAN-19-0530
+
+# required libraries
 library(here)
 library(ggplot2)
 library(tidyverse)
 library(mgcv)
 library(patchwork)
+library(viridis)
 #####
-data<-read.csv(here("data","tumor_data.csv"))
-data$Group<-as.factor(data$Group)
+data<-read.csv(here("data","tumor_data.csv")) #read data, mean tumor volume trend
+data$Group<-as.factor(data$Group) #make Group a factor
+
 #plot data
-ggplot(data,aes(x=Day,y=Volume))+geom_line()+facet_wrap(~Group)
+ggplot(data,aes(x=Day,y=Volume,group=Group,color=Group))+
+    geom_line(size=2)+
+    theme_classic()+
+    scale_colour_viridis_d(option="turbo",end=1)
 
 #This function simulates data for the tumor data using default parameters of 10 observations per timepoint (as in the
 # paper)and Standard deviation (sd) of ~15%.
@@ -37,10 +44,10 @@ simulate_data <- function(dat, n = 10, sd = 15) {
 n <- 10 #number of observations (from paper)
 sd <- 40 #mm3 approximate sd from paper
 dat_sim <- simulate_data(data, n, sd)
-breaks_s<-c(0,2,4,6,8,10,12,14)
+breaks_s<-c(0,2,4,6,8,10,12,14) #set tick marks
 
 #plotting simulated data
-f1<-ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
+ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
     geom_point(show.legend=FALSE,size=1.5,alpha=0.5)+
     stat_summary(aes(y = Vol_sim,
                      group=Group),
@@ -50,21 +57,23 @@ f1<-ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
     theme(
         axis.text=element_text(size=22)
     )+
-    scale_x_continuous(breaks=breaks_s)
+    scale_x_continuous(breaks=breaks_s)+
+    theme_bw()+
+    scale_colour_viridis_d(option="turbo",end=1)
 
-f1
 
 ##### fit GAM and rm-ANOVA
 
-#GAM for StO2
+#GAM for tumor Volume: smooth over time for each group, 10 knots
 
-m1 <- gam(Vol_sim ~ Group+s(Day, by = Group, k = 10),
+gam1 <- gam(Vol_sim ~ Group+s(Day, by = Group, k = 10),
           method='REML',
           data  = dat_sim)
 
 
 
-#linear model
+#linear model, a rm-ANOVA model for time, group and their interaction
+
 lm1<-lm(Vol_sim ~ Day + Group + Day * Group, data = dat_sim)
 
 
@@ -106,14 +115,14 @@ f3<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
               size=1,data=gam_predict,
               show.legend = FALSE)+
     #facet_wrap(~Group)+
-    labs(y=expression(atop(StO[2],'complete')))+
+    labs(y=expression(atop("Tumor volume", (mm^3))))+
     scale_x_continuous(breaks=breaks_s)+
     theme_classic()+
     theme(
         axis.text=element_text(size=22)
-    )
+    )+
+    scale_colour_viridis_d(option="turbo",end=1)
 
-f3
 
 #plot linear fit for rm-ANOVA
 f4<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
@@ -134,6 +143,10 @@ f4<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
     theme_classic()+
     theme(
         axis.text=element_text(size=22)
-    )
-f4
+    )+
+    scale_colour_viridis_d(option="turbo",end=1)
+
+#plot both models
+f3+f4
+
 

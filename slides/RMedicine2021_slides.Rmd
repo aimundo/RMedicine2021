@@ -47,6 +47,11 @@ options(htmltools.dir.version = FALSE)
 library(icons)
 library(xaringanExtra)
 library(tidyverse)
+library(mgcv)
+library(ggplot2)
+library(patchwork)
+library(here)
+set.seed(1) #for reproducibility
 knitr::opts_chunk$set(
   fig.width=9, 
   fig.height=3.5, 
@@ -214,8 +219,66 @@ _Vishwanath et. al. 2009_
 ---
 ## A visual example
 
+Some simulated data that follows trends of tumor volume reported in the literature. Simulation is useful here because we can only get a mean value from the paper. 
+
+.pull-left[
+```{r,data-plot,echo=FALSE,fig.width=7,fig.height=5}
+data<-read.csv(here("data","tumor_data.csv")) #read data, mean tumor volume trend
+data$Group<-as.factor(data$Group) #make Group a factor
+
+#plot data
+ggplot(data,aes(x=Day,y=Volume,group=Group,color=Group))+
+    geom_line(size=2)+
+    theme_classic()+
+  theme(
+        axis.text=element_text(size=22)
+    )+
+    scale_colour_viridis_d(option="turbo",end=1)
 
 
+```
+]
+
+.pull-right[
+```{r, simulated-data,echo=FALSE,fig.height=5,fig.width=7}
+simulate_data <- function(dat, n = 10, sd = 15) {
+    dat_sim <- dat %>%
+        slice(rep(1:n(), each = n)) %>%
+        group_by(Group, Day) %>%
+        mutate(
+            Vol_sim = pmax(rnorm(n, Volume, sd), 0.0001),
+            subject=rep(1:10),
+            subject=factor(paste(subject, Group, sep = "-"))
+        ) %>%
+        ungroup()
+
+    return(dat_sim)
+}
+
+n <- 10 #number of observations (from paper)
+sd <- 40 #mm3 approximate sd from paper
+dat_sim <- simulate_data(data, n, sd)
+breaks_s<-c(0,2,4,6,8,10,12,14) #set tick marks
+
+#plotting simulated data
+ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
+    geom_point(show.legend=FALSE,size=1.5,alpha=0.5)+
+    stat_summary(aes(y = Vol_sim,
+                     group=Group),
+                 fun=mean, geom="line",size=1,show.legend = FALSE)+
+    labs(y=expression(atop(Volume (mm^3),'(simulated)')))+
+    theme_classic()+
+    theme(
+        axis.text=element_text(size=22)
+    )+
+    scale_x_continuous(breaks=breaks_s)+
+    scale_colour_viridis_d(option="turbo",end=1)
+
+
+
+
+```
+]
 ---
 class: center
 
