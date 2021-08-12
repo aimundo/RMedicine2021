@@ -70,12 +70,14 @@ knitr::opts_chunk$set(
 
 xaringanExtra::use_panelset()
 xaringanExtra::use_tile_view()
-xaringanExtra::use_logo(
-  image_url = "https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png"
-)
+xaringanExtra::use_share_again()
 xaringanExtra::style_share_again(
   share_buttons = c("twitter","linkedin")
 )
+xaringanExtra::use_logo(
+  image_url = "https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png"
+)
+
 ```
 
 class: title-slide, right, top
@@ -122,14 +124,20 @@ class: about-me-slide, inverse, middle, center
 
 ---
 class: center
-The material of this flash talk is covered in depth in a preprint we have recently published:
+The material of this flash talk is covered in depth in a paper from our lab (under review) the preprint is available at
 
 .center[
-![:scale 50%](img/preprint.png)
+![:scale 15%](img/bioRxiv.png)
 ]
 
-https://www.biorxiv.org/content/10.1101/2021.06.10.447970v2.full.pdf+html <br/>
-doi: https://doi.org/10.1101/2021.06.10.447970
+.center[
+![:scale 40%](img/preprint.png)
+]
+
+doi: https://doi.org/10.1101/2021.06.10.447970 <br/>
+
+The slides of this talk are available at
+
 ---
 
 # Motivation
