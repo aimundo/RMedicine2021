@@ -59,7 +59,7 @@ a:hover { border-bottom: none; }
 .remark-slide-content h3 {
   /*font-size:          1em;*/
   font-weight:        500;
-  color:              var(--DarkGreen);
+  color:              var(--uark-cardinal);
   line-height:        1em;
 }
 
@@ -82,16 +82,16 @@ hr {
 
 /*-- Slide background and text (inverse) --*/
 .inverse {
-  background-color:   var(--my-blue);
-  color:              var(--PaleGrey);
+  background-color:   var(--White);
+  color:              var(--uark-cardinal);
   text-shadow:        none;
 }
 
 /*-- Headings (inverse) --*/
-.inverse h1, .inverse h2, .inverse h3 { color: var(--PaleGrey); }
+.inverse h1, .inverse h2, .inverse h3 { color: var(--DarkBlue); }
 
 .inverse a {
-  color:              var(--PaleGrey);
+  color:              var(--DarkBlue);
   border-bottom:      1px solid white;
 }
 
@@ -103,7 +103,7 @@ hr {
 }
 
 /*-- Text muting/fading --*/
-.fade { opacity: 0.5; }
+.fade { opacity: 1; }
 
 /*-- Small text --*/
 .small {

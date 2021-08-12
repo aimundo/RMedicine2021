@@ -96,13 +96,6 @@ background-size: 30%, cover
 ]
 
 
-
-???
-
-Welcome to the workshop on sharing your work with xaringan.
-
-Where I'll show you how to create impressive presentation slides that can be deployed to the web for easy sharing.
-
 ---
 name: about-me
 layout: false
@@ -110,18 +103,21 @@ class: about-me-slide, inverse, middle, center
 
 # About me
 
-<img style="border-radius: 50%;" src="https://silvia.rbind.io/authors/silvia/avatar.png" width="150px"/>
-
+.pull-left[
+![:scale 50%](img/profile pic.jpg)
 ## Ariel Mundo
-
 ### PhD Candidate
+]
 
-.fade[Department of Biomedical Engineering<br>University of Arkansas<br> Fayetteville, AR, USA]
+.pull-right[
+.fade[### Department of Biomedical Engineering<br>
+University of Arkansas<br> Fayetteville, AR, USA
+]
 
-[`r icons::fontawesome("link")` aimundo.rbind.io](https://aimundo.rbind.io)
-[`r icons::fontawesome("twitter")` @amundortiz](https://twitter.com/amundortiz)
+[`r icons::fontawesome("link")` aimundo.rbind.io](https://aimundo.rbind.io) <br>
+[`r icons::fontawesome("twitter")` @amundortiz](https://twitter.com/amundortiz)<br>
 [`r icons::icon_style(icons::fontawesome("github"), scale = 1)` @aimundo](https://github.com/aimundo)
-
+]
 ---
 class: center
 The material of this flash talk is covered in depth in a paper from our lab (under review) the preprint is available at
@@ -717,6 +713,41 @@ c1
 
 ]
 ]
+
+---
+## Other advantages of GAMs
+
+.center[
+### Linear models vs GAMs
+]
+
+</style>
+</head>
+<body>
+<table>
+  <tr>
+    <th>Data</th>
+    <th>GAMs</th>
+    <th>Linear Models</th>
+  </tr>
+  <tr>
+    <td>Missing obs.</td>
+    <td> X</td>
+    <td> 0</td>
+  </tr>
+  <tr>
+    <td>Covariance structures</td>
+    <td> X</td>
+    <td> 0 (rm-ANOVA) X(LMEMs)</td>
+  </tr>
+  <tr>
+    <td>Prediction</td>
+    <td> X</td>
+    <td> 0</td>
+  </tr>
+</table>
+
+
 ---
 class: center
 
