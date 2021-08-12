@@ -52,6 +52,7 @@ library(ggplot2)
 library(patchwork)
 library(here)
 library(emmeans)
+library(gganimate)
 set.seed(1) #for reproducibility
 knitr::opts_chunk$set(
   fig.width=9, 
@@ -119,6 +120,16 @@ class: about-me-slide, inverse, middle, center
 [`r icons::fontawesome("twitter")` @amundortiz](https://twitter.com/amundortiz)
 [`r icons::icon_style(icons::fontawesome("github"), scale = 1)` @aimundo](https://github.com/aimundo)
 
+---
+class: center
+The material of this flash talk is covered in depth in a preprint we have recently published:
+
+.center[
+![:scale 50%](img/preprint.png)
+]
+
+https://www.biorxiv.org/content/10.1101/2021.06.10.447970v2.full.pdf+html <br/>
+doi: https://doi.org/10.1101/2021.06.10.447970
 ---
 
 # Motivation

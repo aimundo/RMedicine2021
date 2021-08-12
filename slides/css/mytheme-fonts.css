@@ -3,9 +3,11 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700&display=swap);
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Merriweather:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap');
+
 
 body {
-  font-family: 'Merriweather',serif;
+  font-family: 'Atkinson Hyperlegible', sans-serif;
 }
 
 h1, h2 {
