@@ -265,3 +265,11 @@ c1<-ggplot(comp_Vol_sim, aes(x = Day, y = diff, group = pair)) +
         legend.title=element_blank()
     )
 c1
+
+n_time = 6
+x <- seq(1,6, length.out = n_time)
+y<-sin(x+6)
+
+vals<-tibble(x,y)
+
+ggplot(vals,aes(x=x,y=y))+geom_smooth()

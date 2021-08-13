@@ -69,12 +69,17 @@ a:hover { border-bottom: none; }
   line-height:        1.0em;
 }
 
+.remark-slide-emphasis {
+  font-size:          3.0rem;
+  line-height:        1.0em;
+}
+
 /*-- HORIZONTAL BARS --*/
 hr {
   content:            '';
   display:            block;
   border:             none;
-  background-color:   #ae8f00;
+  background-color:   var(--DarkBlue);
   height:             0.08em;
 }
 

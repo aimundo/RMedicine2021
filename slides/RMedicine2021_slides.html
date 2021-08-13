@@ -89,9 +89,11 @@ The material of this flash talk is covered in depth in a paper from our lab (und
 ![:scale 40%](img/preprint.png)
 ]
 
-doi: https://doi.org/10.1101/2021.06.10.447970 &lt;br/&gt;
+https://doi.org/10.1101/2021.06.10.447970 &lt;br/&gt;
 
 The slides of this talk are available at
+
+[tinyurl.com/m75rupjd](https://tinyurl.com/m75rupjd)
 
 ---
 
@@ -139,7 +141,7 @@ y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3
 `\(\beta_0\)`: the mean group value &lt;/br&gt;
 
 --
-`\(time_t\)`, `\(treatment_j\)`, `\(time_t \times treatment_j\)`: fixed effects of time and treatment and their interaction &lt;/br&gt;
+`\(time_t\)`, `\(treatment_j\)`, `\(time_t \times treatment_j\)`: fixed effects  &lt;/br&gt;
 
 --
 `\(\beta_1, \beta_2\)` and `\(\beta_3\)`: linear slopes of the fixed effects. &lt;/br&gt; 
@@ -147,8 +149,6 @@ y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3
 --
 `\(\varepsilon_{ijt}\)`: random variation not explained by the fixed effects, assumed to be `\(\sim N(0,\sigma^2)\)`&lt;/br&gt;
 
---
-(independently and identically normally distributed with mean zero and variance `\(\sigma^2\)`).
 
 ---
 
@@ -156,27 +156,34 @@ y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3
 
 
 
-An rm-ANOVA is a model that fits a **line** to the trend of the data!
- 
+An rm-ANOVA is a model that fits a .my-gold[**line**] to the trend of the data!
+
+--
+
 .pull-left[
-&lt;img src="img/batis.gif" width="300"&gt;
+![:scale 75%](img/batis.gif)
 ]
 .footnote[
 _Batis et. al. 2013_
 ]
 
+--
 .pull-right[
 
  - It works reasonably well in certain cases
- ## But in biomedical research things don't look linear!
- ]
- 
 
+ 
+ .remark-slide-emphasis[
+ .green[
+ But in biomedical research things don't look linear!
+ ]
+ ]
+]
 ---
 
-## Some examples
+# Some examples
 .pull-left[
-&lt;img src="img/Skala.jpg" width="250"&gt;
+![:scale 50%](img/Skala.jpg)
 ]
 .footnote[
 _Skala et. al. 2010_
@@ -185,22 +192,25 @@ _Skala et. al. 2010_
 --
 
 .pull-right[
-&lt;img src="img/Vishwanath.jpg" width="500"&gt;
+![:scale 80%](img/Vishwanath.jpg)
 .footnote[
 _Vishwanath et. al. 2009_
 ]
 ]
 
 ---
-## A visual example
+# Simulation to the rescue!
 
-Some simulated data that follows trends of tumor volume reported in Zheng et. al. (2019). Simulation is useful here because we can only get a mean value from the paper. 
+- Some simulated data that follows trends of tumor volume reported in Zheng et. al. (2019). 
+--
 
+- Simulation is useful here because we can only get a mean value from the paper. 
+--
 .pull-left[
 &lt;img src="RMedicine2021_slides_files/figure-html/data-plot-1.png" width="504" /&gt;
 ]
 
-
+--
 .pull-right[
 &lt;img src="RMedicine2021_slides_files/figure-html/simulated-data-1.png" width="504" /&gt;
 ]
@@ -219,11 +229,12 @@ Some simulated data that follows trends of tumor volume reported in Zheng et. al
 ```r
 lm1&lt;-lm(Vol_sim ~ Day + Group + Day * Group, data = dat_sim)
 ```
-]
+Where: &lt;br&gt;
+`Vol_sim`= simulated volume size &lt;br&gt;
+`Day`= Day number (1-15) &lt;br&gt;
+`Group`= Factor (T1 or T2) &lt;br&gt;
+`dat_sim`= simulated dataset
 
-.panel[.panel-name[Plot]
-
-&lt;img src="RMedicine2021_slides_files/figure-html/rm-ANOVA plot-1.png" width="504" style="display: block; margin: auto;" /&gt;
 ]
 
 .panel[.panel-name[p-values]
@@ -263,12 +274,24 @@ emmeans(lm1, ~Day * Group, adjust = "bonf")
 ## Confidence level used: 0.95 
 ## Conf-level adjustment: bonferroni method for 2 estimates
 ```
+]
+
+.panel[.panel-name[Plot]
+
+.pull-left[
+&lt;img src="RMedicine2021_slides_files/figure-html/rm-ANOVA plot-1.png" width="504" /&gt;
+]
+
+.pull-right[
+ 
+![:scale 50%](img/uncle_roger.gif)
+]
 
 ]
 ]
 
 ---
-## An alternative: Generalized additive models (GAMs)
+# An alternative: Generalized additive models (GAMs)
 
 `\begin{equation}
   y_{ijt}=\beta_0+f(x_t\mid \beta_j)+\varepsilon_{ijt}
@@ -283,13 +306,13 @@ The change of `\(y_{ijt}\)` over time is represented by the _smooth function_ `\
 `\(\varepsilon_{ijt}\)` represents the residual error
 
 ---
-## An alternative: GAMs
+# An alternative: GAMs
 
 &lt;img src="RMedicine2021_slides_files/figure-html/basis-functions-plot-1.png" width="864" style="display: block; margin: auto;" /&gt;
 
 ---
 
-## How does a GAM model look for the simulated data?
+# How does a GAM model look for the simulated data?
 .panelset[
 .panel[.panel-name[model]
 
@@ -315,7 +338,7 @@ gam1 &lt;- gam(Vol_sim ~ Group+s(Day, by = Group, k = 10),
 ]
 
 ---
-## Other advantages of GAMs
+# Other advantages of GAMs
 
 .center[
 ### Linear models vs GAMs

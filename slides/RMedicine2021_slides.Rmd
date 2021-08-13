@@ -130,9 +130,11 @@ The material of this flash talk is covered in depth in a paper from our lab (und
 ![:scale 40%](img/preprint.png)
 ]
 
-doi: https://doi.org/10.1101/2021.06.10.447970 <br/>
+https://doi.org/10.1101/2021.06.10.447970 <br/>
 
 The slides of this talk are available at
+
+[tinyurl.com/m75rupjd](https://tinyurl.com/m75rupjd)
 
 ---
 
@@ -180,7 +182,7 @@ $y_{ijt}$: is the response for subject $i$ in treatment group $j$ at time $t$ </
 $\beta_0$: the mean group value </br>
 
 --
-$time_t$, $treatment_j$, $time_t \times treatment_j$: fixed effects of time and treatment and their interaction </br>
+$time_t$, $treatment_j$, $time_t \times treatment_j$: fixed effects  </br>
 
 --
 $\beta_1, \beta_2$ and $\beta_3$: linear slopes of the fixed effects. </br> 
@@ -188,8 +190,6 @@ $\beta_1, \beta_2$ and $\beta_3$: linear slopes of the fixed effects. </br>
 --
 $\varepsilon_{ijt}$: random variation not explained by the fixed effects, assumed to be $\sim N(0,\sigma^2)$</br>
 
---
-(independently and identically normally distributed with mean zero and variance $\sigma^2$).
 
 ---
 
@@ -197,27 +197,34 @@ $\varepsilon_{ijt}$: random variation not explained by the fixed effects, assume
 
 
 
-An rm-ANOVA is a model that fits a **line** to the trend of the data!
- 
+An rm-ANOVA is a model that fits a .my-gold[**line**] to the trend of the data!
+
+--
+
 .pull-left[
-<img src="img/batis.gif" width="300">
+![:scale 75%](img/batis.gif)
 ]
 .footnote[
 _Batis et. al. 2013_
 ]
 
+--
 .pull-right[
 
  - It works reasonably well in certain cases
- ## But in biomedical research things don't look linear!
- ]
- 
 
+ 
+ .remark-slide-emphasis[
+ .green[
+ But in biomedical research things don't look linear!
+ ]
+ ]
+]
 ---
 
-## Some examples
+# Some examples
 .pull-left[
-<img src="img/Skala.jpg" width="250">
+![:scale 50%](img/Skala.jpg)
 ]
 .footnote[
 _Skala et. al. 2010_
@@ -226,36 +233,53 @@ _Skala et. al. 2010_
 --
 
 .pull-right[
-<img src="img/Vishwanath.jpg" width="500">
+![:scale 80%](img/Vishwanath.jpg)
 .footnote[
 _Vishwanath et. al. 2009_
 ]
 ]
 
 ---
-## A visual example
+# Simulation to the rescue!
 
-Some simulated data that follows trends of tumor volume reported in Zheng et. al. (2019). Simulation is useful here because we can only get a mean value from the paper. 
+- Some simulated data that follows trends of tumor volume reported in Zheng et. al. (2019). 
+--
 
+- Simulation is useful here because we can only get a mean value from the paper. 
+--
 .pull-left[
 ```{r,data-plot,echo=FALSE,fig.width=7,fig.height=5}
+
+breaks_s<-c(0,2,4,6,8,10,12,14) #set tick marks
 data<-read.csv(here("data","tumor_data.csv")) #read data, mean tumor volume trend
 data$Group<-as.factor(data$Group) #make Group a factor
 
 #plot data
 ggplot(data,aes(x=Day,y=Volume,group=Group,color=Group))+
     geom_line(size=2)+
+  labs(y=expression(atop(Volume, (mm^3))))+
     theme_classic()+
   theme(
-        axis.text=element_text(size=22)
+        axis.text=element_text(size=22),
+    legend.title=element_text(size=20),
+      legend.text= element_text(size=20),
+    legend.key.width=unit(1,"cm")
     )+
-    scale_colour_viridis_d(option="turbo",end=1)
+    annotate("text",
+             x=5,
+             y=400,
+             label="Mean values",
+             size=8,
+             angle=0
+    )+
+    scale_x_continuous(breaks=breaks_s)+
+    scale_colour_viridis_d(option="mako",end=0.8)
 
 
 ```
 ]
 
-
+--
 .pull-right[
 ```{r, simulated-data,echo=FALSE,fig.height=5,fig.width=7}
 simulate_data <- function(dat, n = 10, sd = 15) {
@@ -275,11 +299,11 @@ simulate_data <- function(dat, n = 10, sd = 15) {
 n <- 10 #number of observations (from paper)
 sd <- 40 #mm3 approximate sd from paper
 dat_sim <- simulate_data(data, n, sd)
-breaks_s<-c(0,2,4,6,8,10,12,14) #set tick marks
+
 
 #plotting simulated data
 ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
-    geom_point(show.legend=FALSE,size=1.5,alpha=0.5)+
+    geom_point(show.legend=FALSE,size=1.5)+
     stat_summary(aes(y = Vol_sim,
                      group=Group),
                  fun=mean, geom="line",size=1,show.legend = FALSE)+
@@ -288,8 +312,15 @@ ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
     theme(
         axis.text=element_text(size=22)
     )+
+    annotate("text",
+             x=5,
+             y=400,
+             label="Simulated data",
+             size=8,
+             angle=0
+    )+
     scale_x_continuous(breaks=breaks_s)+
-    scale_colour_viridis_d(option="turbo",end=1)
+    scale_colour_viridis_d(option="mako",end=0.8)
 
 
 
@@ -311,11 +342,34 @@ ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
 lm1<-lm(Vol_sim ~ Day + Group + Day * Group, data = dat_sim)
 
 ```
+Where: <br>
+`Vol_sim`= simulated volume size <br>
+`Day`= Day number (1-15) <br>
+`Group`= Factor (T1 or T2) <br>
+`dat_sim`= simulated dataset
+
+]
+
+.panel[.panel-name[p-values]
+
+```{r,p-values,echo=TRUE}
+anova(lm1)
+```
+
+]
+
+.panel[.panel-name[post-hoc]
+
+```{r,post-hoc,echo=TRUE}
+emmeans(lm1, ~Day * Group, adjust = "bonf")
+
+```
 ]
 
 .panel[.panel-name[Plot]
 
-```{r,rm-ANOVA plot, echo=FALSE, fig.width=7,fig.height=5,fig.align='center'}
+.pull-left[
+```{r,rm-ANOVA plot, echo=FALSE, fig.width=7,fig.height=5}
 lm_predict<-expand_grid(Group = factor(c("T1", "T2")),
                         Day = c(0:15),
                         subject=factor(rep(1:10)),
@@ -339,7 +393,7 @@ f4<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
     geom_line(aes(y=fit,
                   color=Group),
               size=1,data=lm_predict,
-              show.legend = FALSE)+
+              show.legend = TRUE)+
     #facet_wrap(~Group)+
     labs(y=expression(paste('Volume'(mm^3))))+
     scale_x_continuous(breaks=breaks_s)+
@@ -347,32 +401,22 @@ f4<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
     theme(
         axis.text=element_text(size=22)
     )+
-    scale_colour_viridis_d(option="turbo",end=1)
+    scale_colour_viridis_d(option="mako",end=0.8)
 
 f4
 ```
 ]
 
-.panel[.panel-name[p-values]
-
-```{r,p-values,echo=TRUE}
-anova(lm1)
-```
-
+.pull-right[
+ 
+![:scale 50%](img/uncle_roger.gif)
 ]
-
-.panel[.panel-name[post-hoc]
-
-```{r,post-hoc,echo=TRUE}
-emmeans(lm1, ~Day * Group, adjust = "bonf")
-
-```
 
 ]
 ]
 
 ---
-## An alternative: Generalized additive models (GAMs)
+# An alternative: Generalized additive models (GAMs)
 
 \begin{equation}
   y_{ijt}=\beta_0+f(x_t\mid \beta_j)+\varepsilon_{ijt}
@@ -387,24 +431,37 @@ The change of $y_{ijt}$ over time is represented by the _smooth function_ $f(x_t
 $\varepsilon_{ijt}$ represents the residual error
 
 ---
-## An alternative: GAMs
+# An alternative: GAMs
 
 ```{r,basis-functions-plot, echo=FALSE,fig.height=7,fig.width=12, fig.align='center'}
 n_time = 6
  x <- seq(1,6, length.out = n_time)
  mu <- matrix(0, length(x), 2)
- mu[, 1] <-  -(0.25 * x^2) +1.5*x-1.25 #mean response
+ mu[, 1] <- sin(x+6) #mean response
+ #mu[, 1] <-  -(0.25 * x^2) +1.5*x-1.25 #mean response
  mu[, 2] <- (0.25 * x^2) -1.5*x+1.25 #mean response
  y <- array(0, dim = c(length(x), 2, 10))
  errors <- array(0, dim = c(length(x), 2, 10))
  for (i in 1:2) {     # number of treatments
      for (j in 1:10) {  # number of subjects
          # compound symmetry errors
-         errors[, i, j] <- rmvn(1, rep(0, length(x)), 0.1 * diag(6) + 0.25 * matrix(1, 6, 6))
+         errors[, i, j] <- rmvn(1, rep(0, length(x)), 0.1 * diag(6) + 0.025 * matrix(1, 6, 6))
          y[, i, j] <- mu[, i] + errors[, i, j]
      }
  }
  
+##dataframe of "real" data for plotting
+ 
+y_r<-sin(x+6)
+
+vals_r<-tibble(x,y_r)
+
+p15<-ggplot(vals_r,aes(x=x,y=y_r))+
+  geom_smooth()+
+  labs(y='Original function',x="time")+
+  scale_y_continuous(breaks=seq(-2,2,1))+
+  theme_classic()
+
  #label each table
   dimnames(y) <- list(time = x, treatment = 1:2, subject = 1:10)
  dimnames(errors) <- list(time = x, treatment = 1:2, subject = 1:10)
@@ -539,17 +596,18 @@ p13<-ggplot(basis_plot,
 p14<-ggplot(data=dat,
             aes(x=time,y=y))+
   geom_point(size=sz+1)+
-  labs(y='Simulated \n response')+
+  labs(y='Fitted \n smooth')+
   geom_line(data=smooth,
             aes(x=time,
                 y=smooth),
             color="#6C581DFF",
             size=sz+1)+
+  scale_y_continuous(breaks=seq(-2,2,1))+
   theme_classic()
   
 
 #Combining all
-b_plot<-p11+p13+p12+p14+plot_annotation(tag_levels='A')&
+b_plot<-p15+p11+p13+p12+p14+plot_annotation(tag_levels='A')&
   theme(
      text=element_text(size=18)
      )
@@ -559,7 +617,7 @@ b_plot
 
 ---
 
-## How does a GAM model look for the simulated data?
+# How does a GAM model look for the simulated data?
 .panelset[
 .panel[.panel-name[model]
 
@@ -606,7 +664,7 @@ f3<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
     theme(
         axis.text=element_text(size=22)
     )+
-    scale_colour_viridis_d(option="turbo",end=1)
+    scale_colour_viridis_d(option="mako",end=0.8)
 
 f3
 ```
@@ -615,7 +673,7 @@ f3
 
 .panel[.panel-name[Pairwise comp.]
 
-```{r,GAM-tumor-plot,echo=FALSE,fig.align='center',fig.width=8,fig.height=6}
+```{r,GAM-tumor-plot,echo=FALSE,fig.align='center',fig.width=8,fig.height=5}
 ##Pairwise comparisons
 
 pdat <- expand.grid(Day = seq(0, 15, length = 400),
@@ -715,7 +773,7 @@ c1
 ]
 
 ---
-## Other advantages of GAMs
+# Other advantages of GAMs
 
 .center[
 ### Linear models vs GAMs
