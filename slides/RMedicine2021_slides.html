@@ -338,40 +338,58 @@ gam1 &lt;- gam(Vol_sim ~ Group+s(Day, by = Group, k = 10),
 ]
 
 ---
+
 # Other advantages of GAMs
 
-.center[
-### Linear models vs GAMs
-]
+&lt;!-- &lt;font size="16"&gt; --&gt;
+&lt;!-- &lt;table&gt; --&gt;
+&lt;!--   &lt;tr&gt; --&gt;
+&lt;!--     &lt;th&gt; Data&lt;/th&gt; --&gt;
+&lt;!--     &lt;th&gt;GAMs&lt;/th&gt; --&gt;
+&lt;!--   &lt;/tr&gt; --&gt;
+&lt;!--   &lt;tr&gt; --&gt;
+&lt;!--     &lt;td&gt; Missing obs.&lt;/td&gt; --&gt;
+&lt;!--     &lt;td&gt;  &amp;#10004;&lt;/td&gt; --&gt;
+&lt;!--   &lt;/tr&gt; --&gt;
+&lt;!--   &lt;tr&gt; --&gt;
+&lt;!--     &lt;td&gt;Different covariance &lt;br&gt; structures&lt;/td&gt; --&gt;
+&lt;!--     &lt;td&gt;  &amp;#10004;&lt;/td&gt; --&gt;
+&lt;!--   &lt;/tr&gt; --&gt;
+&lt;!--   &lt;tr&gt; --&gt;
+&lt;!--     &lt;td&gt;Prediction&lt;/td&gt; --&gt;
+&lt;!--     &lt;td&gt; &amp;#10004;&lt;/td&gt; --&gt;
+&lt;!--   &lt;/tr&gt; --&gt;
+&lt;!-- &lt;/table&gt; --&gt;
+&lt;!-- &lt;/font&gt; --&gt;
 
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table&gt;
-  &lt;tr&gt;
-    &lt;th&gt;Data&lt;/th&gt;
-    &lt;th&gt;GAMs&lt;/th&gt;
-    &lt;th&gt;Linear Models&lt;/th&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Missing obs.&lt;/td&gt;
-    &lt;td&gt; X&lt;/td&gt;
-    &lt;td&gt; 0&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Covariance structures&lt;/td&gt;
-    &lt;td&gt; X&lt;/td&gt;
-    &lt;td&gt; 0 (rm-ANOVA) X(LMEMs)&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Prediction&lt;/td&gt;
-    &lt;td&gt; X&lt;/td&gt;
-    &lt;td&gt; 0&lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;
+- Can use different covariance structures
 
+--
+
+- Work with missing observations
+
+--
+
+- Different types of splines can be used:
+--
+
+ - Cubic
+ - thin plate
+ - Gaussian process
+ 
+--- 
 
 ---
+# Conclusions
+
+- Doing a visual exploration of the data is always a good idea!
+
+- GAMs allow to fit non-linear responses over time
+
+- The same idea behind a rm-ANOVA or LMEM holds, but you use a spline instead of a line to do the fitting
+
+---
+
 class: center
 
 # Acknowledgements
@@ -382,7 +400,14 @@ Department of Mathematical Sciences, University of Arkansas
 
 Dr. Timothy J. Muldoon &lt;br&gt; &lt;br&gt; 
 Department of Biomedical Engineering, University of Arkansas
+
+Silvia Canelon (slides theme) &lt;br&gt; &lt;br&gt;
+
+
+Alison Presmanes Hill (font)
 ]
+
+
 
 .pull-right[
 ![:scale 20%](img/nsf.png) &lt;br&gt; &lt;br&gt;

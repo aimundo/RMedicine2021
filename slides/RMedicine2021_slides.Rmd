@@ -459,7 +459,7 @@ vals_r<-tibble(x,y_r)
 p15<-ggplot(vals_r,aes(x=x,y=y_r))+
   geom_smooth()+
   labs(y='Original function',x="time")+
-  scale_y_continuous(breaks=seq(-2,2,1))+
+ expand_limits(y=c(-2,2))+
   theme_classic()
 
  #label each table
@@ -602,7 +602,7 @@ p14<-ggplot(data=dat,
                 y=smooth),
             color="#6C581DFF",
             size=sz+1)+
-  scale_y_continuous(breaks=seq(-2,2,1))+
+  expand_limits(y=c(-2,2))+
   theme_classic()
   
 
@@ -773,40 +773,58 @@ c1
 ]
 
 ---
+
 # Other advantages of GAMs
 
-.center[
-### Linear models vs GAMs
-]
+<!-- <font size="16"> -->
+<!-- <table> -->
+<!--   <tr> -->
+<!--     <th> Data</th> -->
+<!--     <th>GAMs</th> -->
+<!--   </tr> -->
+<!--   <tr> -->
+<!--     <td> Missing obs.</td> -->
+<!--     <td>  &#10004;</td> -->
+<!--   </tr> -->
+<!--   <tr> -->
+<!--     <td>Different covariance <br> structures</td> -->
+<!--     <td>  &#10004;</td> -->
+<!--   </tr> -->
+<!--   <tr> -->
+<!--     <td>Prediction</td> -->
+<!--     <td> &#10004;</td> -->
+<!--   </tr> -->
+<!-- </table> -->
+<!-- </font> -->
 
-</style>
-</head>
-<body>
-<table>
-  <tr>
-    <th>Data</th>
-    <th>GAMs</th>
-    <th>Linear Models</th>
-  </tr>
-  <tr>
-    <td>Missing obs.</td>
-    <td> X</td>
-    <td> 0</td>
-  </tr>
-  <tr>
-    <td>Covariance structures</td>
-    <td> X</td>
-    <td> 0 (rm-ANOVA) X(LMEMs)</td>
-  </tr>
-  <tr>
-    <td>Prediction</td>
-    <td> X</td>
-    <td> 0</td>
-  </tr>
-</table>
+- Can use different covariance structures
 
+--
+
+- Work with missing observations
+
+--
+
+- Different types of splines can be used:
+--
+
+ - Cubic
+ - thin plate
+ - Gaussian process
+ 
+--- 
 
 ---
+# Conclusions
+
+- Doing a visual exploration of the data is always a good idea!
+
+- GAMs allow to fit non-linear responses over time
+
+- The same idea behind a rm-ANOVA or LMEM holds, but you use a spline instead of a line to do the fitting
+
+---
+
 class: center
 
 # Acknowledgements
@@ -817,7 +835,14 @@ Department of Mathematical Sciences, University of Arkansas
 
 Dr. Timothy J. Muldoon <br> <br> 
 Department of Biomedical Engineering, University of Arkansas
+
+Silvia Canelon (slides theme) <br> <br>
+
+
+Alison Presmanes Hill (font)
 ]
+
+
 
 .pull-right[
 ![:scale 20%](img/nsf.png) <br> <br>
