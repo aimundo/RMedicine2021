@@ -104,36 +104,37 @@ class: about-me-slide, inverse, middle, center
 # About me
 
 .pull-left[
-![:scale 50%](img/profile pic.jpg)
-## Ariel Mundo
-### PhD Candidate
-]
-
-.pull-right[
-.fade[### Department of Biomedical Engineering<br>
-University of Arkansas<br> Fayetteville, AR, USA
-]
-
-[`r icons::fontawesome("link")` aimundo.rbind.io](https://aimundo.rbind.io) <br>
+<img style="border-radius: 50% 20% / 10% 40%;" src="img/profile pic.jpg" width="200px"/>
+### Ariel Mundo
 [`r icons::fontawesome("twitter")` @amundortiz](https://twitter.com/amundortiz)<br>
 [`r icons::icon_style(icons::fontawesome("github"), scale = 1)` @aimundo](https://github.com/aimundo)
 ]
+
+.pull-right[
+![:scale 30%](img/uark_logo.png) <br>
+Department of Biomedical Engineering<br>
+University of Arkansas<br> Fayetteville, AR, USA
+]
 ---
 class: center
-The material of this flash talk is covered in depth in a paper from our lab (under review) the preprint is available at
+This talk is based on work from our lab (under review) the preprint is available at: 
 
-.center[
 ![:scale 15%](img/bioRxiv.png)
-]
 
-.center[
+
+
+
 ![:scale 40%](img/preprint.png)
-]
 
+
+This paper covers: 
+
+**Limitations of linear models**<br>
+**Theory of GAMs** <br>
+**Workflow for GAM selection in R using biomedical data** <br>
 https://doi.org/10.1101/2021.06.10.447970 <br/>
 
-The slides of this talk are available at
-
+The slides of this talk are available at <br>
 [tinyurl.com/m75rupjd](https://tinyurl.com/m75rupjd)
 
 ---
@@ -150,7 +151,7 @@ The slides of this talk are available at
 
 > Some examples of different areas of biomedical research that use longitudinal studies:
 
-- Fertility
+- Pediatrics
 
 - Cancer
 
@@ -160,84 +161,20 @@ The slides of this talk are available at
 
 ### How do we analyze longitudinal data?
 
-- The general rule in Biomedical Research: 
+#### What we tend to do in Biomedical Research:
+
+<img src="img/arrow.jpg" width="300" style="position: fixed; right: 20px; bottom:20px;">
 
 --
 
-Repeated measures &#8594; repeated measures ANOVA (rm-ANOVA) &#8594; _post-hoc_ comparisons
+.my-coral[Repeated measures &#8594; repeated measures ANOVA (rm-ANOVA) &#8594; _post-hoc_ comparisons ]<br> <br>
+
 
 --
 
-### But what is exactly an rm-ANOVA?
+#### Or we can also do:
 
-
-\begin{equation}
-y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3 \times time_{t}\times treatment_{j}+\varepsilon_{ijt}\\ 
-\end{equation}
-
---
-$y_{ijt}$: is the response for subject $i$ in treatment group $j$ at time $t$ </br> 
-
---
-$\beta_0$: the mean group value </br>
-
---
-$time_t$, $treatment_j$, $time_t \times treatment_j$: fixed effects  </br>
-
---
-$\beta_1, \beta_2$ and $\beta_3$: linear slopes of the fixed effects. </br> 
- 
---
-$\varepsilon_{ijt}$: random variation not explained by the fixed effects, assumed to be $\sim N(0,\sigma^2)$</br>
-
-
----
-
-### In other words...
-
-
-
-An rm-ANOVA is a model that fits a .my-gold[**line**] to the trend of the data!
-
---
-
-.pull-left[
-![:scale 75%](img/batis.gif)
-]
-.footnote[
-_Batis et. al. 2013_
-]
-
---
-.pull-right[
-
- - It works reasonably well in certain cases
-
- 
- .remark-slide-emphasis[
- .green[
- But in biomedical research things don't look linear!
- ]
- ]
-]
----
-
-# Some examples
-.pull-left[
-![:scale 50%](img/Skala.jpg)
-]
-.footnote[
-_Skala et. al. 2010_
-]
-
---
-
-.pull-right[
-![:scale 80%](img/Vishwanath.jpg)
-.footnote[
-_Vishwanath et. al. 2009_
-]
-]
+.green[Repeated measures &#8594; linear mixed model (LMEM) &#8594; _post-hoc_ comparisons]
 
 ---
 # Simulation to the rescue!
@@ -414,6 +351,82 @@ f4
 
 ]
 ]
+
+---
+### But what is exactly an rm-ANOVA?
+
+<br>
+<br>
+<br>
+
+\begin{equation}
+y_{ijt} = \beta_0+\beta_1 \times time_{t} +\beta_2 \times treatment_{j} +\beta_3 \times time_{t}\times treatment_{j}+\varepsilon_{ijt}\\ 
+\end{equation}
+
+--
+$y_{ijt}$: is the response for subject $i$ in treatment group $j$ at time $t$ </br> 
+
+--
+$\beta_0$: the mean group value </br>
+
+--
+$time_t$, $treatment_j$, $time_t \times treatment_j$: fixed effects  </br>
+
+--
+$\beta_1, \beta_2$ and $\beta_3$: linear slopes of the fixed effects. </br> 
+ 
+--
+$\varepsilon_{ijt}$: random variation not explained by the fixed effects, assumed to be $\sim N(0,\sigma^2)$</br>
+
+
+---
+
+### In other words...
+
+
+
+An rm-ANOVA is a model that fits a .my-gold[**line**] to the trend of the data!
+
+--
+
+.pull-left[
+![:scale 75%](img/batis.gif)
+]
+.footnote[
+_Batis et. al. 2013_
+]
+
+--
+.pull-right[
+
+ - It works reasonably well in certain cases
+
+ 
+ .remark-slide-emphasis[
+ .green[
+ But in biomedical research things don't look linear!
+ ]
+ ]
+]
+---
+
+# Some examples
+.pull-left[
+![:scale 50%](img/Skala.jpg)
+]
+.footnote[
+_Skala et. al. 2010_
+]
+
+--
+
+.pull-right[
+![:scale 80%](img/Vishwanath.jpg)
+.footnote[
+_Vishwanath et. al. 2009_
+]
+]
+
 
 ---
 # An alternative: Generalized additive models (GAMs)
@@ -673,7 +686,7 @@ f3
 
 .panel[.panel-name[Pairwise comp.]
 
-```{r,GAM-tumor-plot,echo=FALSE,fig.align='center',fig.width=8,fig.height=5}
+```{r,GAM-tumor-plot,echo=FALSE,fig.align='left',fig.width=8,fig.height=5}
 ##Pairwise comparisons
 
 pdat <- expand.grid(Day = seq(0, 15, length = 400),
@@ -769,8 +782,18 @@ c1
 
 ```
 
+.pull-right[
+- Comparisons are not guided by a _p-value_
+
+- But the comparison actually makes sense!
 ]
+
+
 ]
+
+]
+
+
 
 ---
 
@@ -797,15 +820,16 @@ c1
 <!-- </table> -->
 <!-- </font> -->
 
-- Can use different covariance structures
+- Can use different covariance structures &#9989; <br> <br>
 
 --
 
-- Work with missing observations
+- Work with missing observations &#9989; <br> <br>
 
 --
 
-- Different types of splines can be used:
+- Different types of splines can be used: <br> <br>
+
 --
 
  - Cubic
@@ -817,11 +841,13 @@ c1
 ---
 # Conclusions
 
-- Doing a visual exploration of the data is always a good idea!
+- Doing a visual exploration of the data is always a good idea! <br> <br>
 
-- GAMs allow to fit non-linear responses over time
+- GAMs allow to fit non-linear responses over time <br> <br>
 
-- The same idea behind a rm-ANOVA or LMEM holds, but you use a spline instead of a line to do the fitting
+- The same idea behind a rm-ANOVA or LMEM holds, but you use a spline instead of a line to do the fitting <br> <br>
+
+- .red[_p-values_] can be misleading! 
 
 ---
 
@@ -839,7 +865,8 @@ Department of Biomedical Engineering, University of Arkansas
 Silvia Canelon (slides theme) <br> <br>
 
 
-Alison Presmanes Hill (font)
+Alison Presmanes Hill (font, Atkinson Hyperelegible)
+https://brailleinstitute.org/freefont
 ]
 
 

@@ -238,7 +238,7 @@ pre code {
 /*-- PROGRESS BAR IN FOOTER --*/
 /* https://github.com/yihui/xaringan/wiki/Progressbar */
 
-.remark-slide-number { position: inherit; }
+.remark-slide-number { position: fixed; }
 
 .remark-slide-number .progress-bar-container {
   position:           absolute;
