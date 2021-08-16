@@ -74,9 +74,6 @@ xaringanExtra::use_share_again()
 xaringanExtra::style_share_again(
   share_buttons = c("twitter","linkedin")
 )
-xaringanExtra::use_logo(
-  image_url = "https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png"
-)
 
 ```
 
