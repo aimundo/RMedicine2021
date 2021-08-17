@@ -115,7 +115,7 @@ hr {
   font-size: 70%;
 }
 /*-- Horizontal bars (inverse) --*/
-.inverse hr { background-color: var(--PaleGrey); }
+.inverse hr { background-color: var(--DarkBlue); }
 
 /*-- BOTTOM-OF-SLIDE PROPERTIES ----------------------------------------------*/
 
@@ -168,7 +168,7 @@ div.footer-link {
 
 /*-- Line highlighting within code --*/
 .remark-code-line-highlighted {
-  background-color:   var(--PaleGrey);
+  background-color:   var(--DarkBlue);
 }
 
 /*-- CODE CHUNKS --*/

@@ -82,17 +82,21 @@ This talk is based on work from our lab (under review) the preprint is available
 
 
 
+--
 
 ![:scale 40%](img/preprint.png)
 
+--
 
 This paper covers: 
 
 **Limitations of linear models**&lt;br&gt;
 **Theory of GAMs** &lt;br&gt;
 **Workflow for GAM selection in R using biomedical data** &lt;br&gt;
-https://doi.org/10.1101/2021.06.10.447970 &lt;br/&gt;
+https://doi.org/10.1101/2021.06.10.447970 &lt;br&gt;
 
+--
+&lt;br&gt;
 The slides of this talk are available at &lt;br&gt;
 [tinyurl.com/m75rupjd](https://tinyurl.com/m75rupjd)
 
@@ -153,7 +157,6 @@ The slides of this talk are available at &lt;br&gt;
 ]
 
 ---
---- 
 
 ### How does an rm-ANOVA model look on this data?
 
@@ -310,11 +313,19 @@ _Vishwanath et. al. 2009_
   y_{ijt}=\beta_0+f(x_t\mid \beta_j)+\varepsilon_{ijt}
 \end{equation}`
 
-`\(y_{ijt}\)`: response at time `\(t\)` of subject  `\(i\)` in group `\(j\)` 
+--
 
-`\(\beta_0\)`: expected value at time 0 
+`\(y_{ijt}\)`: response at time `\(t\)` of subject  `\(i\)` in group `\(j\)` &lt;br&gt;
 
-The change of `\(y_{ijt}\)` over time is represented by the _smooth function_ `\(f(x_t\mid \beta_j)\)` with inputs as the covariates `\(x_t\)` and parameters `\(\beta_j\)` 
+--
+
+`\(\beta_0\)`: expected value at time 0 &lt;br&gt;
+
+--
+
+The change of `\(y_{ijt}\)` over time is represented by the _smooth function_ `\(f(x_t\mid \beta_j)\)` with inputs as the covariates `\(x_t\)` and parameters `\(\beta_j\)` &lt;br&gt;
+
+--
 
 `\(\varepsilon_{ijt}\)` represents the residual error
 
@@ -359,7 +370,6 @@ gam1 &lt;- gam(Vol_sim ~ Group+s(Day, by = Group, k = 10),
 ]
 
 
-
 ---
 
 # Other advantages of GAMs
@@ -401,17 +411,19 @@ gam1 &lt;- gam(Vol_sim ~ Group+s(Day, by = Group, k = 10),
  - thin plate
  - Gaussian process
  
---- 
 
 ---
 # Conclusions
 
 - Doing a visual exploration of the data is always a good idea! &lt;br&gt; &lt;br&gt;
 
+--
 - GAMs allow to fit non-linear responses over time &lt;br&gt; &lt;br&gt;
 
+--
 - The same idea behind a rm-ANOVA or LMEM holds, but you use a spline instead of a line to do the fitting &lt;br&gt; &lt;br&gt;
 
+--
 - .red[_p-values_] can be misleading! 
 
 ---
@@ -421,11 +433,13 @@ class: center
 # Acknowledgements
 
 .pull-left[
-Dr. John R. Tipton &lt;br&gt; &lt;br&gt;
+Dr. John R. Tipton &lt;br&gt;
 Department of Mathematical Sciences, University of Arkansas
 
-Dr. Timothy J. Muldoon &lt;br&gt; &lt;br&gt; 
+
+Dr. Timothy J. Muldoon &lt;br&gt; 
 Department of Biomedical Engineering, University of Arkansas
+
 
 Silvia Canelon (slides theme) &lt;br&gt; &lt;br&gt;
 

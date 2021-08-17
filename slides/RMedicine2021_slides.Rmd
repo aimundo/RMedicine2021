@@ -120,17 +120,21 @@ This talk is based on work from our lab (under review) the preprint is available
 
 
 
+--
 
 ![:scale 40%](img/preprint.png)
 
+--
 
 This paper covers: 
 
 **Limitations of linear models**<br>
 **Theory of GAMs** <br>
 **Workflow for GAM selection in R using biomedical data** <br>
-https://doi.org/10.1101/2021.06.10.447970 <br/>
+https://doi.org/10.1101/2021.06.10.447970 <br>
 
+--
+<br>
 The slides of this talk are available at <br>
 [tinyurl.com/m75rupjd](https://tinyurl.com/m75rupjd)
 
@@ -263,7 +267,6 @@ ggplot(dat_sim, aes(x = Day, y = Vol_sim, color = Group)) +
 ]
 
 ---
---- 
 
 ### How does an rm-ANOVA model look on this data?
 
@@ -317,7 +320,7 @@ lm_predict<-lm_predict%>%
 
 #plot linear fit for rm-ANOVA
 f4<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
-    geom_point(aes(color=Group),size=1.5,alpha=0.5,show.legend = FALSE)+
+    geom_point(aes(color=Group),size=1.5,alpha=0.5,show.legend = TRUE)+
     geom_ribbon(aes( x=Day,ymin=(fit - 2*se.fit),
                      ymax=(fit + 2*se.fit),fill=Group),
                 alpha=0.3,
@@ -327,7 +330,7 @@ f4<-ggplot(data=dat_sim, aes(x=Day, y=Vol_sim, group=Group)) +
     geom_line(aes(y=fit,
                   color=Group),
               size=1,data=lm_predict,
-              show.legend = TRUE)+
+              show.legend = FALSE)+
     #facet_wrap(~Group)+
     labs(y=expression(paste('Volume'(mm^3))))+
     scale_x_continuous(breaks=breaks_s)+
@@ -432,11 +435,19 @@ _Vishwanath et. al. 2009_
   y_{ijt}=\beta_0+f(x_t\mid \beta_j)+\varepsilon_{ijt}
 \end{equation}
 
-$y_{ijt}$: response at time $t$ of subject  $i$ in group $j$ 
+--
 
-$\beta_0$: expected value at time 0 
+$y_{ijt}$: response at time $t$ of subject  $i$ in group $j$ <br>
 
-The change of $y_{ijt}$ over time is represented by the _smooth function_ $f(x_t\mid \beta_j)$ with inputs as the covariates $x_t$ and parameters $\beta_j$ 
+--
+
+$\beta_0$: expected value at time 0 <br>
+
+--
+
+The change of $y_{ijt}$ over time is represented by the _smooth function_ $f(x_t\mid \beta_j)$ with inputs as the covariates $x_t$ and parameters $\beta_j$ <br>
+
+--
 
 $\varepsilon_{ijt}$ represents the residual error
 
@@ -791,7 +802,6 @@ c1
 ]
 
 
-
 ---
 
 # Other advantages of GAMs
@@ -833,17 +843,19 @@ c1
  - thin plate
  - Gaussian process
  
---- 
 
 ---
 # Conclusions
 
 - Doing a visual exploration of the data is always a good idea! <br> <br>
 
+--
 - GAMs allow to fit non-linear responses over time <br> <br>
 
+--
 - The same idea behind a rm-ANOVA or LMEM holds, but you use a spline instead of a line to do the fitting <br> <br>
 
+--
 - .red[_p-values_] can be misleading! 
 
 ---
@@ -853,11 +865,13 @@ class: center
 # Acknowledgements
 
 .pull-left[
-Dr. John R. Tipton <br> <br>
+Dr. John R. Tipton <br>
 Department of Mathematical Sciences, University of Arkansas
 
-Dr. Timothy J. Muldoon <br> <br> 
+
+Dr. Timothy J. Muldoon <br> 
 Department of Biomedical Engineering, University of Arkansas
+
 
 Silvia Canelon (slides theme) <br> <br>
 
